@@ -12,33 +12,33 @@ socket = TCPSocket.open('localhost', 10500)
 data = ""
 while true
   data += socket.recv(65535)
-  if data[-2..-1] == ".\n"
-    data.gsub!(/\.\n/, '')
-    xml = Nokogiri(data)
+  next unless data[-2..-1] == ".\n"
 
-    commands = (xml/"RECOGOUT"/"SHYPO"/"WHYPO").map { |w|
-      w["WORD"].size > 0 ? w["WORD"] : nil
-    }.compact
+  data.gsub!(/\.\n/, '')
+  xml = Nokogiri(data)
+  data = ""
 
-    command = commands[0]
+  commands = (xml/"RECOGOUT"/"SHYPO"/"WHYPO").map { |w|
+    w["WORD"].size > 0 ? w["WORD"] : nil
+  }.compact
 
-    case(command)
-    when '[今何時？]'
-      # macos lionでKyokoをインストールしておくこと
-      `say -v Kyoko #{Time.now.strftime('%H:%M')}です。`
-    when '[電気付けて]'
+  command = commands[0]
+
+  case(command)
+  when '[電気付けて]'
+    iremocon.is 1
+  when '[消灯]'
+    3.times do
       iremocon.is 1
-    when '[消灯]'
-      3.times do
-        iremocon.is 1
-        sleep 0.5
-      end
-    when '[エアコン付けて]'
-      iremocon.is 2
-    when '[エアコン止めて]'
-      iremocon.is 3
+      sleep 0.5
     end
-
-    data = ""
+  when '[エアコン付けて]'
+    iremocon.is 2
+  when '[エアコン止めて]'
+    iremocon.is 3
+  when '[今何時？]'
+    # macos lionでKyokoをインストールしておくこと
+    `say -v Kyoko #{Time.now.strftime('%H:%M')}です。`
   end
+
 end
