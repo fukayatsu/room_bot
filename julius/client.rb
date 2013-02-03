@@ -9,6 +9,8 @@ require 'iremocon'
 iremocon = Iremocon.new '192.168.11.28'
 socket = TCPSocket.open('localhost', 10500)
 
+light_status = :on
+
 data = ""
 while true
   data += socket.recv(65535)
@@ -22,20 +24,24 @@ while true
     w["WORD"].size > 0 ? w["WORD"] : nil
   }.compact
 
-  command = commands[0]
+  puts command = commands[0]
 
   case(command)
   when '[電気付けて]'
+    next if light_status == :on
     iremocon.is 1
-  when '[消灯]'
+    light_status = :on
+  when '[電気消して]', '[消灯]'
     # TODO: 明るさセンサーを組み込む
+    next if light_status == :off
     3.times do
       iremocon.is 1
-      sleep 0.5
+      sleep 1
     end
+    light_status = :off
   when '[エアコン付けて]'
     iremocon.is 2
-  when '[エアコン止めて]'
+  when '[エアコン止めて]', '[エアコン消して]'
     iremocon.is 3
   when '[今何時？]'
     # macos lionでKyokoをインストールしておくこと
