@@ -11,6 +11,9 @@ class Roombot
   def initialize
     say "プログラム開始"
 
+    say "赤外線モジュール接続"
+    @iremocon = Iremocon.new '192.168.11.28'
+
     say "クロン登録"
     @cron_thread = Thread.new do
       while true
@@ -21,14 +24,13 @@ class Roombot
           run_command '[点灯]', true
         when '23:59'
           run_command '[消灯]', true
+        else
+          run_command '[iremocon_status]'
         end
 
         sleep 60
       end
     end
-
-    say "赤外線モジュール接続"
-    @iremocon = Iremocon.new '192.168.11.28'
 
     say "音声認識モジュール接続"
     @julius_thread = Thread.new do
@@ -63,6 +65,8 @@ class Roombot
         @iremocon.is 3
       when '[今何時？]'
         say "#{Time.now.strftime('%H:%M')}です。"
+      when '[iremocon_status]'
+        @iremocon.au
       end
     rescue Errno::EPIPE
       puts say "赤外線モジュール再接続"
