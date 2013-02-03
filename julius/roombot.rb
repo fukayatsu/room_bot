@@ -25,6 +25,7 @@ class Roombot
   end
 
   def run_command(command)
+    puts command
     begin
       case(command)
       when '[電気付けて]', '[点灯]'
