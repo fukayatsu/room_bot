@@ -10,7 +10,7 @@ on_data = Proc.new do |data|
 
   if (dataset.size >= 64)
     average = dataset.inject(:+).to_f / dataset.size
-    puts "%4.1f" % average
+    puts "%1.1f" % Math.log(average + 1.0)
     dataset = []
   end
 end
