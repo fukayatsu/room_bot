@@ -27,7 +27,7 @@ temp_value  = temp_dataset.inject(:+).to_f / temp_dataset.size
 light_str = "%1.1f" % Math.log(light_value + 1.0)
 temp_str  = "%2.1f" % (temp_value / 1024 * 5 / 0.01)
 
-puts status_str = "temperature:#{temp_str}\tlight:#{light_str}\ttime:#{Time.now}"
+puts status_str = "temperature:#{temp_str}, light:#{light_str}, time:#{Time.now}"
 
 ### twitter status update
 
