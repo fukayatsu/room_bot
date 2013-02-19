@@ -48,11 +48,13 @@ class Roombot
       case(command)
       when '[電気付けて]', '[点灯]'
         if @light_status == :off
+          say '了解'
           @iremocon.is 1
           @light_status = :on
         end
       when '[電気消して]', '[消灯]'
         if @light_status == :on
+          say '了解'
           3.times do
             @iremocon.is 1
             sleep 1
@@ -60,9 +62,17 @@ class Roombot
           @light_status = :off
         end
       when '[エアコン付けて]'
+        say '了解'
         @iremocon.is 2
-      when '[エアコン止めて]', '[エアコン消して]'
+      when '[エアコン消して]'
+        say '了解'
         @iremocon.is 3
+      when '[ヒーター付けて]'
+        say '了解'
+        @iremocon.is 4
+      when '[ヒーター消して]'
+        say '了解'
+        @iremocon.is 5
       when '[今何時？]'
         say "#{Time.now.strftime('%H:%M')}です。"
       when '[iremocon_status]'
