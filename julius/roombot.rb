@@ -46,12 +46,12 @@ class Roombot
     puts "#{Time.now} #{command}"
     begin
       case(command)
-      when '[電気付けて]', '[点灯]'
+      when '[電気付けて]'
         if @light_status == :off
           @iremocon.is 1
           @light_status = :on
         end
-      when '[電気消して]', '[消灯]'
+      when '[電気消して]'
         if @light_status == :on
           3.times do
             @iremocon.is 1
