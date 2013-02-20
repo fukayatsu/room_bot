@@ -45,7 +45,9 @@ class Roombot
   end
 
   def run_command(command, retry_when_error = false)
-    return if (@voice_input == :off) && !['[音声認識再開]', '[iremocon_status]'].include?(command)
+    return if (@voice_input == :off) &&
+      !['[音声認識再開]', '[iremocon_status]'].include?(command) &&
+      !retry_when_error
 
     puts "#{Time.now} #{command}"
     begin
