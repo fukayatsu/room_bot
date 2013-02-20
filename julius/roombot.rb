@@ -84,8 +84,10 @@ class Roombot
       when '[iremocon_status]'
         @iremocon.au
       when '[音声認識停止]'
+        say '了解'
         @voice_input = :off
       when '[音声認識再開]'
+        say '了解'
         @voice_input = :on
       end
     rescue Errno::EPIPE
