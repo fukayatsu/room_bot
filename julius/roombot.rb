@@ -40,9 +40,12 @@ class Roombot
     @socket = TCPSocket.open('localhost', 10500)
 
     @light_status = :on
+    @voice_input  = :on
   end
 
   def run_command(command, retry_when_error = false)
+    return if (@voice_input == :off) && !['[音声認識再開]', '[iremocon_status]'].include?(command)
+
     puts "#{Time.now} #{command}"
     begin
       case(command)
@@ -77,6 +80,10 @@ class Roombot
         say "#{Time.now.strftime('%H:%M')}です。"
       when '[iremocon_status]'
         @iremocon.au
+      when '[音声認識停止]'
+        @voice_input = :off
+      when '[音声認識再開]'
+        @voice_input = :on
       end
     rescue Errno::EPIPE
       puts say "赤外線モジュール再接続"
