@@ -22,6 +22,7 @@ class Roombot
         case(time_str)
         when '08:00'
           run_command '[点灯]', true
+          run_command '[エアコン付けて]', true
         when '23:59'
           run_command '[消灯]', true
         else
