@@ -5,6 +5,7 @@ require 'socket'
 require 'nokogiri'
 require 'iremocon'
 require 'systemu'
+require 'weather_jp'
 require 'pp'
 
 class Roombot
@@ -23,10 +24,12 @@ class Roombot
         when '08:00'
           run_command '[電気付けて]', true
           run_command '[エアコン付けて]', true
-        when '08:01', '08:10', '08:20', '08:30', '08:40'
+          run_command '[今何時？]', true
+          run_command '[今日の天気は？]', true
+        when '08:10', '08:20', '08:30', '08:40'
           run_command '[今何時？]', true
         when '23:59'
-          run_command '[電気消して]', true
+            run_command '[電気消して]', true
         else
           run_command '[iremocon_status]'
         end
@@ -83,6 +86,9 @@ class Roombot
         @iremocon.is 5
       when '[今何時？]'
         say "#{Time.now.strftime('%H:%M')}です。"
+      when '[今日の天気は？]'
+        shibuya = WeatherJp.get :shibuya
+        say shibuya.today.to_s
       when '[iremocon_status]'
         @iremocon.au
       when '[音声認識停止]'
