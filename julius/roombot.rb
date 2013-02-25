@@ -29,7 +29,7 @@ class Roombot
         when '08:10', '08:20', '08:30', '08:40'
           run_command '[今何時？]', true
         when '23:59'
-            run_command '[電気消して]', true
+          run_command '[電気消して]', true
         else
           run_command '[iremocon_status]'
         end
