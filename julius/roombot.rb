@@ -23,13 +23,16 @@ class Roombot
         case(time_str)
         when '08:00'
           run_command '[電気付けて]', true
-          run_command '[エアコン付けて]', true
+          # run_command '[エアコン付けて]', true
           run_command '[今何時？]', true
           run_command '[今日の天気は？]', true
-        when '08:10', '08:20', '08:30', '08:40'
+
+        when /0(8|9):[0-5]5/
           run_command '[今何時？]', true
-        when '23:59'
+
+        when '01:00'
           run_command '[電気消して]', true
+
         else
           run_command '[iremocon_status]'
         end
@@ -135,7 +138,7 @@ class Roombot
     xml = Nokogiri(data)
 
     commands = (xml/"RECOGOUT"/"SHYPO"/"WHYPO").map { |w|
-      w["WORD"].size > 0 ? w["WORD"] : nil
+      w["WORD"] && w["WORD"].size > 0 ? w["WORD"] : nil
     }.compact
 
     commands[0]
